@@ -7,9 +7,9 @@ import type { Language } from "@/lib/types"
 import { RomaniaFlag, UnitedKingdomFlag, HungaryFlag } from "@/components/flags"
 
 const LANGUAGES: { code: Language; label: string; FlagComponent: React.ComponentType<{ className?: string }> }[] = [
-  { code: "ro", label: "Română", FlagComponent: RomaniaFlag },
-  { code: "en", label: "English", FlagComponent: UnitedKingdomFlag },
-  { code: "hu", label: "Magyar", FlagComponent: HungaryFlag },
+  { code: "ro", label: "RO", FlagComponent: RomaniaFlag },
+  { code: "en", label: "EN", FlagComponent: UnitedKingdomFlag },
+  { code: "hu", label: "HU", FlagComponent: HungaryFlag },
 ]
 
 export function LanguageSwitcher() {
