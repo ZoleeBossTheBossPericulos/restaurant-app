@@ -94,7 +94,7 @@ export function MenuItemDrawer({ item, open, onOpenChange }: MenuItemDrawerProps
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-screen max-h-screen flex flex-col !mt-0 rounded-none data-[vaul-drawer-direction=bottom]:!max-h-screen md:h-auto md:max-h-[85vh] md:max-w-2xl md:mx-auto md:rounded-t-lg">
+      <DrawerContent className="h-dvh max-h-dvh flex flex-col !mt-0 rounded-none data-[vaul-drawer-direction=bottom]:!max-h-screen md:h-auto md:max-h-[85vh] md:max-w-2xl md:mx-auto md:rounded-t-lg">
         <Button variant="secondary" size="icon" className="absolute right-4 cursor-pointer top-4 z-10" onClick={() => onOpenChange(false)}>
           <X className="h-4 w-4" />
         </Button>
