@@ -30,7 +30,7 @@ export default async function HomePage() {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {restaurants?.map((restaurant) => (
-              <Card key={restaurant.id} className="overflow-hidden transition-shadow hover:shadow-lg">
+              <Card key={restaurant.id} className="overflow-hidden py-4 transition-shadow hover:shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-2xl">{restaurant.name}</CardTitle>
                   <CardDescription>{restaurant.description.ro}</CardDescription>
@@ -63,7 +63,7 @@ export default async function HomePage() {
 
       <footer className="border-t py-6">
         <div className="mx-auto max-w-7xl px-6 text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 Restaurant Menus. Toate drepturile rezervate.</p>
+          <p>&copy; {new Date().getFullYear()} Restaurant Menus. Toate drepturile rezervate.</p>
         </div>
       </footer>
     </div>

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/server"
 import { notFound } from "next/navigation"
+import { cookies } from "next/headers"
 import { RestaurantHeader } from "@/components/restaurant-header"
 import { RestaurantNav } from "@/components/restaurant-nav"
 import { RestaurantStory } from "@/components/restaurant-story"
@@ -7,7 +8,7 @@ import { RestaurantGallery } from "@/components/restaurant-gallery"
 import { RestaurantInfo } from "@/components/restaurant-info"
 import { MenuSection } from "@/components/menu-section"
 import { LanguageProvider } from "@/lib/context"
-import type { Restaurant, RestaurantImage, MenuCategory, MenuItem } from "@/lib/types"
+import type { Restaurant, RestaurantImage, MenuCategory, MenuItem, Language } from "@/lib/types"
 
 export async function generateStaticParams() {
   const supabase = await createClient()
@@ -64,8 +65,20 @@ export default async function RestaurantPage({ params }: { params: Promise<{ slu
     }),
   )
 
+  // Get language preference from cookies (for SSR)
+  let defaultLanguage: Language = "ro"
+  try {
+    const cookieStore = await cookies()
+    const langCookie = cookieStore.get("preferred-language")
+    if (langCookie?.value && ["ro", "en", "hu"].includes(langCookie.value)) {
+      defaultLanguage = langCookie.value as Language
+    }
+  } catch {
+    // If cookies() fails, use default "ro"
+  }
+
   return (
-    <LanguageProvider defaultLanguage="ro">
+    <LanguageProvider defaultLanguage={defaultLanguage}>
       <div className="min-h-screen bg-background">
         <RestaurantHeader restaurant={restaurant as Restaurant} />
         <RestaurantNav />
@@ -73,15 +86,15 @@ export default async function RestaurantPage({ params }: { params: Promise<{ slu
         <main>
           <MenuSection categories={categoriesWithItems as (MenuCategory & { items: MenuItem[] })[]} />
 
-          <div id="about">
+          <div id="about" className="scroll-mt-20">
             <RestaurantStory restaurant={restaurant as Restaurant} />
           </div>
 
-          <div id="gallery">
+          <div id="gallery" className="scroll-mt-20">
             <RestaurantGallery images={(images || []) as RestaurantImage[]} />
           </div>
 
-          <div id="contact">
+          <div id="contact" className="scroll-mt-20">
             <RestaurantInfo restaurant={restaurant as Restaurant} />
           </div>
         </main>

@@ -3,39 +3,42 @@
 import { useLanguage } from "@/lib/context"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Languages } from "lucide-react"
 import type { Language } from "@/lib/types"
+import { RomaniaFlag, UnitedKingdomFlag, HungaryFlag } from "@/components/flags"
 
-const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: "ro", label: "Română", flag: "🇷🇴" },
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "hu", label: "Magyar", flag: "🇭🇺" },
+const LANGUAGES: { code: Language; label: string; FlagComponent: React.ComponentType<{ className?: string }> }[] = [
+  { code: "ro", label: "Română", FlagComponent: RomaniaFlag },
+  { code: "en", label: "English", FlagComponent: UnitedKingdomFlag },
+  { code: "hu", label: "Magyar", FlagComponent: HungaryFlag },
 ]
 
 export function LanguageSwitcher() {
-  const { language, setLanguage, t } = useLanguage()
+  const { language, setLanguage } = useLanguage()
 
   const currentLanguage = LANGUAGES.find((lang) => lang.code === language)
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-          <Languages className="h-4 w-4" />
-          <span className="hidden sm:inline">{currentLanguage?.flag}</span>
+        <Button id='language-switcher' variant="outline" size="sm" className="gap-2 bg-background/80 backdrop-blur-sm hover:bg-background border-border/50">
+          {currentLanguage && <currentLanguage.FlagComponent className="w-5 h-4" />}
+          <span className="hidden sm:inline">{currentLanguage?.label}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {LANGUAGES.map((lang) => (
-          <DropdownMenuItem
-            key={lang.code}
-            onClick={() => setLanguage(lang.code)}
-            className={language === lang.code ? "bg-accent" : ""}
-          >
-            <span className="mr-2">{lang.flag}</span>
-            {lang.label}
-          </DropdownMenuItem>
-        ))}
+      <DropdownMenuContent align="end" className="bg-background border-border">
+        {LANGUAGES.map((lang) => {
+          const FlagComponent = lang.FlagComponent
+          return (
+            <DropdownMenuItem
+              key={lang.code}
+              onClick={() => setLanguage(lang.code)}
+              className={language === lang.code ? "bg-accent" : "hover:bg-accent/50"}
+            >
+              <FlagComponent className="mr-2 w-5 h-4" />
+              {lang.label}
+            </DropdownMenuItem>
+          )
+        })}
       </DropdownMenuContent>
     </DropdownMenu>
   )

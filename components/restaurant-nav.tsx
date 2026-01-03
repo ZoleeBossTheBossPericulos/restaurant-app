@@ -10,7 +10,20 @@ export function RestaurantNav() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
+      // Find the sticky nav element
+      const navElement = document.querySelector("nav") as HTMLElement | null
+      const navHeight = navElement ? navElement.offsetHeight : 60 // Fallback to 60px
+      
+      // Get the element's position relative to the document
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      
+      // Calculate offset: nav height + 16px extra padding for breathing room
+      const offsetPosition = elementPosition - navHeight - 16
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      })
     }
   }
 

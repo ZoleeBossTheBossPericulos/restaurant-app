@@ -13,7 +13,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
   const { t, language } = useLanguage()
 
   return (
-    <section id="menu" className="py-12">
+    <section id="menu" className="py-12 scroll-mt-20">
       <div className="mx-auto max-w-7xl px-6 md:px-12">
         <h2 className="mb-8 text-3xl font-bold md:text-4xl">{t("menu")}</h2>
 
@@ -21,14 +21,14 @@ export function MenuSection({ categories }: MenuSectionProps) {
         <Tabs defaultValue={categories[0]?.id.toString()} className="w-full">
           <TabsList className="mb-8 w-full overflow-x-auto justify-start h-auto gap-2 flex-nowrap">
             {categories.map((category) => (
-              <TabsTrigger key={category.id} value={category.id.toString()} className="text-base flex-shrink-0">
+              <TabsTrigger key={category.id} id={`menu-category-${category.id}`} aria-controls={`menu-category-${category.id}`} value={category.id.toString()} className="text-base cursor-pointer flex-shrink-0">
                 {(category.name as TranslatedText)[language]}
               </TabsTrigger>
             ))}
           </TabsList>
 
           {categories.map((category) => (
-            <TabsContent key={category.id} value={category.id.toString()} className="mt-0">
+            <TabsContent key={category.id} id={`menu-category-${category.id}`} aria-labelledby={`menu-category-${category.id}`} value={category.id.toString()} className="mt-0">
               {category.description && (category.description as TranslatedText)[language] && (
                 <p className="mb-6 text-muted-foreground">{(category.description as TranslatedText)[language]}</p>
               )}

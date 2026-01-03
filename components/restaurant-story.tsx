@@ -17,7 +17,7 @@ export function RestaurantStory({ restaurant }: RestaurantStoryProps) {
   }
 
   return (
-    <section className="py-12">
+    <section className="py-12 scroll-mt-20">
       <div className="mx-auto max-w-4xl px-6 md:px-12">
         <h2 className="mb-6 text-3xl font-bold md:text-4xl">{t("ourStory")}</h2>
         <div className="prose prose-lg max-w-none">

@@ -60,32 +60,50 @@ export function MenuItemDrawer({ item, open, onOpenChange }: MenuItemDrawerProps
   }, [open])
 
   // Calculate image height based on scroll position
-  // Full height (256px) at scrollTop = 0, minimum height (96px) when scrolled
+  // Full height (320px) at scrollTop = 0, minimum height (96px) when scrolled
+  // On desktop (md breakpoint), always use fixed height (320px)
   const MAX_SCROLL = 150 // Scroll distance for full transition
-  const MAX_HEIGHT = 256 // h-64
-  const MIN_HEIGHT = 96 // h-24
-  const imageHeight = Math.round(
-    Math.max(
-      MIN_HEIGHT,
-      Math.min(
-        MAX_HEIGHT,
-        MAX_HEIGHT - (scrollY / MAX_SCROLL) * (MAX_HEIGHT - MIN_HEIGHT)
+  const MAX_HEIGHT = 320 // Full height
+  const MIN_HEIGHT = 96 // Minimum height when scrolled
+  const DESKTOP_HEIGHT = 320 // Fixed height for desktop (h-80 = 320px)
+  
+  // Calculate height - use scroll-based on mobile, fixed on desktop
+  // Desktop uses fixed height, mobile uses dynamic scroll-based height
+  const [isDesktop, setIsDesktop] = useState(false)
+  
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 768)
+    }
+    checkDesktop()
+    window.addEventListener("resize", checkDesktop)
+    return () => window.removeEventListener("resize", checkDesktop)
+  }, [])
+  
+  const imageHeight = isDesktop
+    ? DESKTOP_HEIGHT
+    : Math.round(
+        Math.max(
+          MIN_HEIGHT,
+          Math.min(
+            MAX_HEIGHT,
+            MAX_HEIGHT - (scrollY / MAX_SCROLL) * (MAX_HEIGHT - MIN_HEIGHT)
+          )
+        )
       )
-    )
-  )
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className="h-screen max-h-screen flex flex-col !mt-0 rounded-none data-[vaul-drawer-direction=bottom]:!max-h-screen">
-        <Button variant="ghost" size="icon" className="absolute right-4 top-4 z-10" onClick={() => onOpenChange(false)}>
+      <DrawerContent className="h-screen max-h-screen flex flex-col !mt-0 rounded-none data-[vaul-drawer-direction=bottom]:!max-h-screen md:h-auto md:max-h-[85vh] md:max-w-2xl md:mx-auto md:rounded-t-lg">
+        <Button variant="secondary" size="icon" className="absolute right-4 cursor-pointer top-4 z-10" onClick={() => onOpenChange(false)}>
           <X className="h-4 w-4" />
         </Button>
 
         <div className="flex flex-col flex-1 overflow-hidden">
           {images.length > 0 && (
             <div
-              className="relative w-full flex-shrink-0 overflow-hidden transition-[height] duration-300 ease-out will-change-[height]"
-              style={{ height: `${imageHeight}px` }}
+              className="relative w-full shrink-0 overflow-hidden transition-[height] duration-300 ease-out will-change-[height] md:h-80"
+              style={{ height: isDesktop ? `${DESKTOP_HEIGHT}px` : `${imageHeight}px` }}
             >
               {images.length === 1 ? (
                 <div className="relative h-full w-full">
@@ -93,7 +111,7 @@ export function MenuItemDrawer({ item, open, onOpenChange }: MenuItemDrawerProps
                     src={images[0] || "/placeholder.svg"}
                     alt={(item.name as TranslatedText)[language]}
                     fill
-                    className="object-cover transition-transform duration-300 ease-out"
+                    className="object-cover rounded-t-lg transition-transform duration-300 ease-out"
                     priority
                   />
                   {!item.is_available && (
@@ -137,7 +155,7 @@ export function MenuItemDrawer({ item, open, onOpenChange }: MenuItemDrawerProps
 
           <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-6">
           <DrawerHeader className="p-0 mb-4">
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
               <DrawerTitle className="text-2xl">{(item.name as TranslatedText)[language]}</DrawerTitle>
               <span className="text-2xl font-bold text-primary whitespace-nowrap">
                 {item.price.toFixed(2)} {item.currency}
