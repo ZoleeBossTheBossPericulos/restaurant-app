@@ -96,21 +96,22 @@ export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
                 <CardTitle className="text-2xl">{t("openingHours")}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                   {days.map((day) => {
                     const hours = (restaurant.opening_hours as OpeningHours)?.[day]
                     if (!hours) return null
 
                     return (
-                      <div
-                        key={day}
-                        className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between"
-                      >
-                        <span className="font-medium capitalize text-sm sm:text-base">{t(day)}</span>
+                      <div key={day} className="contents">
+                        <span className="font-medium capitalize text-sm sm:text-base">
+                          {t(day)}
+                        </span>
                         {hours.closed ? (
-                          <span className="text-muted-foreground text-sm sm:text-base">{t("closed")}</span>
+                          <span className="text-muted-foreground text-sm sm:text-base">
+                            {t("closed")}
+                          </span>
                         ) : (
-                          <span className="font-medium text-sm sm:text-base whitespace-nowrap">
+                          <span className="font-medium text-right text-sm sm:text-base whitespace-nowrap">
                             {hours.open} - {hours.close}
                           </span>
                         )}
