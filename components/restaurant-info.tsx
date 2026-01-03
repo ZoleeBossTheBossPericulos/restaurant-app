@@ -28,14 +28,14 @@ export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
               {restaurant.phone && (
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-3 h-auto py-3 px-4 hover:bg-accent"
+                  className="w-full justify-start gap-2 h-auto py-2 px-3 hover:bg-accent"
                   asChild
                 >
                   <a href={`tel:${restaurant.phone}`}>
-                    <Phone className="h-5 w-5 shrink-0 text-primary" />
+                    <Phone className="h-4 w-4 shrink-0 text-primary" />
                     <div className="flex flex-col items-start min-w-0 flex-1">
-                      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("phone")}</span>
-                      <span className="font-medium text-sm sm:text-base">{restaurant.phone}</span>
+                      <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">{t("phone")}</span>
+                      <span className="font-medium text-xs sm:text-sm">{restaurant.phone}</span>
                     </div>
                   </a>
                 </Button>
@@ -43,15 +43,15 @@ export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
               {restaurant.email && (
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-3 h-auto py-3 px-4 hover:bg-accent"
+                  className="w-full justify-start gap-2 h-auto py-2 px-3 hover:bg-accent"
                   asChild
                 >
                   <a href={`mailto:${restaurant.email}`}>
-                    <Mail className="h-5 w-5 shrink-0 text-primary" />
+                    <Mail className="h-4 w-4 shrink-0 text-primary" />
                     <div className="flex flex-col items-start min-w-0 flex-1">
-                      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("email")}</span>
+                      <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">{t("email")}</span>
                       <span
-                        className="font-medium text-sm sm:text-base break-all text-left"
+                        className="font-medium text-xs sm:text-sm break-all text-left"
                         style={{ wordBreak: "break-all", overflowWrap: "anywhere" }}
                       >
                         {restaurant.email}
@@ -63,7 +63,7 @@ export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
               {restaurant.address && (
                 <Button
                   variant="outline"
-                  className="w-full justify-start gap-3 h-auto py-3 px-4 hover:bg-accent"
+                  className="w-full justify-start gap-2 h-auto py-2 px-3 hover:bg-accent"
                   asChild
                 >
                   <a
@@ -73,16 +73,16 @@ export function RestaurantInfo({ restaurant }: RestaurantInfoProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <MapPin className="h-5 w-5 shrink-0 text-primary" />
+                    <MapPin className="h-4 w-4 shrink-0 text-primary" />
                     <div className="flex flex-col items-start min-w-0 flex-1">
-                      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("address")}</span>
-                      <span className="font-medium text-sm sm:text-base break-words text-left">
+                      <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">{t("address")}</span>
+                      <span className="font-medium text-xs sm:text-sm break-words text-left">
                         {restaurant.address}
                         {restaurant.city && `, ${restaurant.city}`}
                         {restaurant.country && `, ${restaurant.country}`}
                       </span>
                     </div>
-                    <ExternalLink className="h-4 w-4 shrink-0 ml-auto text-muted-foreground" />
+                    <ExternalLink className="h-3 w-3 shrink-0 ml-auto text-muted-foreground" />
                   </a>
                 </Button>
               )}
