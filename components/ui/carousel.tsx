@@ -247,7 +247,7 @@ function CarouselDots({ className, ...props }: React.ComponentProps<"div">) {
     })
 
     return () => {
-      api.off("select")
+      api.off("select", () => {})
     }
   }, [api])
 
