@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import type { Language } from "@/lib/types"
 import { RomaniaFlag, UnitedKingdomFlag, HungaryFlag } from "@/components/flags"
+import { ChevronDown } from "lucide-react"
 
 const LANGUAGES: { code: Language; label: string; FlagComponent: React.ComponentType<{ className?: string }> }[] = [
   { code: "ro", label: "RO", FlagComponent: RomaniaFlag },
@@ -20,9 +21,10 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button id='language-switcher' variant="outline" size="sm" className="gap-2 bg-background/80 backdrop-blur-sm hover:bg-background border-border/50">
+        <Button id='language-switcher' variant="outline" size="sm" className="gap-2 cursor-pointer bg-background/80 backdrop-blur-sm hover:bg-background border-border/50">
           {currentLanguage && <currentLanguage.FlagComponent className="w-5 h-4" />}
           <span className="hidden sm:inline">{currentLanguage?.label}</span>
+          <ChevronDown className="h-4 w-4 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="bg-background border-border">
