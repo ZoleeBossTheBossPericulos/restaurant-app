@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import Image from "next/image"
 import { Leaf, Sprout, Wheat, AlertCircle, X } from "lucide-react"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef } from "react"
 
 interface MenuItemDrawerProps {
   item: MenuItem
@@ -20,77 +20,8 @@ export function MenuItemDrawer({ item, open, onOpenChange }: MenuItemDrawerProps
   const { t, language } = useLanguage()
   const [, setApi] = useState<any>()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [scrollY, setScrollY] = useState(0)
 
-  const images = item.image_url ? [item.image_url] : []
-
-  // Handle scroll to adjust image size
-  useEffect(() => {
-    if (!open) {
-      setScrollY(0)
-      return
-    }
-
-    let handleScroll: (() => void) | null = null
-
-    // Use a small delay to ensure the ref is attached after drawer opens
-    const timer = setTimeout(() => {
-      const scrollContainer = scrollContainerRef.current
-      if (!scrollContainer) return
-
-      handleScroll = () => {
-        setScrollY(scrollContainer.scrollTop)
-      }
-
-      // Reset scroll position
-      scrollContainer.scrollTop = 0
-      setScrollY(0)
-
-      // Add scroll listener
-      scrollContainer.addEventListener("scroll", handleScroll, { passive: true })
-    }, 50)
-
-    return () => {
-      clearTimeout(timer)
-      const scrollContainer = scrollContainerRef.current
-      if (scrollContainer && handleScroll) {
-        scrollContainer.removeEventListener("scroll", handleScroll)
-      }
-    }
-  }, [open])
-
-  // Calculate image height based on scroll position
-  // Full height (320px) at scrollTop = 0, minimum height (96px) when scrolled
-  // On desktop (md breakpoint), always use fixed height (320px)
-  const MAX_SCROLL = 150 // Scroll distance for full transition
-  const MAX_HEIGHT = 320 // Full height
-  const MIN_HEIGHT = 96 // Minimum height when scrolled
-  const DESKTOP_HEIGHT = 320 // Fixed height for desktop (h-80 = 320px)
-  
-  // Calculate height - use scroll-based on mobile, fixed on desktop
-  // Desktop uses fixed height, mobile uses dynamic scroll-based height
-  const [isDesktop, setIsDesktop] = useState(false)
-  
-  useEffect(() => {
-    const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 768)
-    }
-    checkDesktop()
-    window.addEventListener("resize", checkDesktop)
-    return () => window.removeEventListener("resize", checkDesktop)
-  }, [])
-  
-  const imageHeight = isDesktop
-    ? DESKTOP_HEIGHT
-    : Math.round(
-        Math.max(
-          MIN_HEIGHT,
-          Math.min(
-            MAX_HEIGHT,
-            MAX_HEIGHT - (scrollY / MAX_SCROLL) * (MAX_HEIGHT - MIN_HEIGHT)
-          )
-        )
-      )
+  const images = item.image_url && item.image_url.trim() ? [item.image_url] : []
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -101,17 +32,14 @@ export function MenuItemDrawer({ item, open, onOpenChange }: MenuItemDrawerProps
 
         <div className="flex flex-col flex-1 overflow-hidden">
           {images.length > 0 && (
-            <div
-              className="relative w-full shrink-0 overflow-hidden transition-[height] duration-300 ease-out will-change-[height] md:h-80"
-              style={{ height: isDesktop ? `${DESKTOP_HEIGHT}px` : `${imageHeight}px` }}
-            >
+            <div className="relative w-full h-64 shrink-0 overflow-hidden">
               {images.length === 1 ? (
                 <div className="relative h-full w-full">
                   <Image
-                    src={images[0] || "/placeholder.svg"}
+                    src={images[0]}
                     alt={(item.name as TranslatedText)[language]}
                     fill
-                    className="object-cover rounded-t-lg transition-transform duration-300 ease-out"
+                    className="object-cover rounded-t-lg"
                     priority
                   />
                   {!item.is_available && (
@@ -129,10 +57,10 @@ export function MenuItemDrawer({ item, open, onOpenChange }: MenuItemDrawerProps
                       <CarouselItem key={index} className="h-full">
                         <div className="relative h-full w-full">
                           <Image
-                            src={imageUrl || "/placeholder.svg"}
+                            src={imageUrl}
                             alt={`${(item.name as TranslatedText)[language]} ${index + 1}`}
                             fill
-                            className="object-cover transition-transform duration-300 ease-out"
+                            className="object-cover"
                             priority={index === 0}
                           />
                         </div>
